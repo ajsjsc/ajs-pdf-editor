@@ -1,4 +1,4 @@
-<#
+﻿<#
   AJS fork: bring a new PdfCraft release into AJS PDF Editor. Run it only when the admin decides to
   ship a new version; nothing in AJS PDF Editor checks for upstream releases by itself.
 
