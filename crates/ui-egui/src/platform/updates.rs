@@ -55,17 +55,10 @@ impl PdfCraftApp {
         self.updates.updater = Updater::new(&crate::UPDATE_APP, env!("CARGO_PKG_VERSION")).with_source(source);
     }
 
-    /// Help ▸ Check for updates: ask for the latest release and show the outcome.
+    /// Help ▸ Check for updates. AJS fork: never asks GitHub; AJS ships updates through its own
+    /// updater, so this opens the AJS downloads page.
     pub fn check_for_updates(&mut self) {
-        #[cfg(not(target_arch = "wasm32"))]
-        {
-            self.updates.open = true;
-            self.updates.check_requested = true;
-        }
-        #[cfg(target_arch = "wasm32")]
-        {
-            self.open_url(RELEASES_PAGE);
-        }
+        self.open_url(pdfcraft_engine::links::APP_PAGE);
     }
 
     /// Starts the checks and picks up their answers (each frame).

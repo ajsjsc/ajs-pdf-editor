@@ -246,7 +246,8 @@ impl PdfCraftApp {
             "optimize.reduce" => self.reduce_file_size(),
             "help.shortcuts" => self.dialog = Some(Dialog::Shortcuts),
             "help.about" => self.dialog = Some(Dialog::About),
-            "help.check_updates" => self.check_for_updates(),
+            // AJS fork: no self-update; updates are installed by the AJS updater, so open the AJS downloads page.
+            "help.check_updates" => self.open_url(pdfcraft_engine::links::APP_PAGE),
             _ => return None,
         }
         Some(true)

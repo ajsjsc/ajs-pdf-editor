@@ -1,3 +1,5 @@
+> **AJS PDF Editor** – bản sửa đổi của PdfCraft do AJS phân phối. Xem [AJS-FORK.md](AJS-FORK.md). README gốc của PdfCraft ở dưới.
+
 <p align="center">
   <a href="https://getartcraft.com/">
     <picture>

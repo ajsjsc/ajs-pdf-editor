@@ -52,7 +52,7 @@ fn a_newer_release_is_offered_for_download() {
     let mut h = harness(Ok(Some("v99.0.0")));
     h.state_mut().execute("help.check_updates");
     settle(&mut h);
-    h.get_by_label_contains("PdfCraft 99.0.0 is available");
+    h.get_by_label_contains("AJS PDF Editor 99.0.0 is available");
     h.get_by_label("DOWNLOAD");
     h.get_by_label("LATER").click();
     h.run_steps(3);
@@ -97,7 +97,7 @@ fn nothing_is_asked_until_the_user_checks() {
     h.state_mut().execute("help.check_updates");
     settle(&mut h);
     assert_eq!(calls.load(std::sync::atomic::Ordering::SeqCst), 1);
-    h.get_by_label_contains("PdfCraft 99.0.0 is available");
+    h.get_by_label_contains("AJS PDF Editor 99.0.0 is available");
 }
 
 #[test]

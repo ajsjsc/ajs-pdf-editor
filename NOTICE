@@ -1,3 +1,15 @@
+AJS PDF Editor
+Modified version of PdfCraft, distributed by AJS (AutoLISP Just Simple, https://lisp.vn).
+
+AJS PDF Editor is based on PdfCraft (https://github.com/storytold/pdfcraft) by the ArtCraft team
+and the PdfCraft contributors, licensed under the MIT License or the Apache License, Version 2.0.
+It is not made, sponsored or endorsed by the ArtCraft team. Changes made by AJS (see tools/ajs/ and
+AJS-FORK.md): product name and icons replaced, ArtCraft name/logos removed (docs/brand/ deleted),
+links pointed to AJS, built-in update check disabled (updates are distributed by AJS).
+
+Original notice follows.
+------------------------------------------------------------------------------------------------
+
 PdfCraft
 Copyright (c) 2026 ArtCraft Team and the PdfCraft contributors.
 Licensed under the MIT License or the Apache License, Version 2.0, at your option

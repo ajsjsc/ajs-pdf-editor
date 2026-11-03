@@ -102,13 +102,13 @@ pub(crate) fn add_page_resources(
     Ok(())
 }
 
-pub(crate) const WRAP_OPEN: &[u8] = b"q %PdfCraft\n";
+pub(crate) const WRAP_OPEN: &[u8] = b"q %AJS PDF Editor\n";
 
 /// Starts with an end of line, so a comment left open at the end of the content before it
 /// can't swallow the `Q`. Older files have the close without it.
-pub(crate) const WRAP_CLOSE: &[u8] = b"\nQ %PdfCraft\n";
+pub(crate) const WRAP_CLOSE: &[u8] = b"\nQ %AJS PDF Editor\n";
 
-pub(crate) const OLD_WRAP_CLOSE: &[u8] = b"Q %PdfCraft\n";
+pub(crate) const OLD_WRAP_CLOSE: &[u8] = b"Q %AJS PDF Editor\n";
 
 /// Whether `bytes` are a wrapper's close: canonical `EMC` closures, then the existing
 /// graphics closures. Legacy closes without the leading newline remain valid on their own.
