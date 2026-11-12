@@ -12,3 +12,8 @@
 	Create desktop shortcut	Tạo shortcut trên màn hình nền
 	Desktop shortcut created: {path}	Đã tạo shortcut trên màn hình nền: {path}
 	Couldn't create the desktop shortcut: {e}	Không tạo được shortcut trên màn hình nền: {e}
+	Add to “Open with” for PDF files	Thêm vào “Mở bằng” cho tệp PDF
+	Remove from “Open with” for PDF files	Gỡ khỏi “Mở bằng” cho tệp PDF
+	AJS PDF Editor is now offered for PDF files. To make it the default, right-click a PDF ▸ Open with ▸ Choose another app.	Đã thêm AJS PDF Editor cho tệp PDF. Muốn đặt làm mặc định: nhấp phải tệp PDF ▸ Mở bằng (Open with) ▸ Chọn ứng dụng khác.
+	AJS PDF Editor was removed from “Open with” for PDF files.	Đã gỡ AJS PDF Editor khỏi “Mở bằng” cho tệp PDF.
+	Couldn't change “Open with” for PDF files: {e}	Không đổi được “Mở bằng” cho tệp PDF: {e}
