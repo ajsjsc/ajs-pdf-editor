@@ -13,7 +13,8 @@ pub const APP: &str = "pdfcraft";
 /// AJS support (help, licences, AutoCAD plug-ins). Command id `help.discord` kept for menus/keymaps.
 pub const DISCORD: &str = "https://lisp.vn";
 pub const WEBSITE: &str = "https://lisp.vn";
-pub const APP_PAGE: &str = "https://lics.autolisp.vn/downloads/bundles/";
+/// The AJS releases page: the latest portable zip and its notes. AJS PDF Editor is free (no licence).
+pub const APP_PAGE: &str = "https://github.com/ajsjsc/ajs-pdf-editor/releases/latest";
 pub const GITHUB: &str = "https://github.com/storytold/pdfcraft";
 
 /// A link and the registry command that opens it.
