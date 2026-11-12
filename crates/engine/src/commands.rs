@@ -433,6 +433,8 @@ pub const COMMANDS: &[CommandSpec] = &[
     c("help.github", "PdfCraft source code (upstream)", HELP, None, Nothing, "code-xml"),
     c("help.check_updates", "Updates from AJS…", HELP, None, Nothing, "cloud"),
     c("help.desktop_shortcut", "Create desktop shortcut", HELP, None, Nothing, "monitor"),
+    c("help.pdf_open_with", "Add to “Open with” for PDF files", HELP, None, Nothing, "file-check"),
+    c("help.pdf_open_with_remove", "Remove from “Open with” for PDF files", HELP, None, Nothing, "file-x"),
     c("help.about", "About AJS PDF Editor", HELP, None, Nothing, "info"),
 ];
 

@@ -139,6 +139,21 @@ impl PdfCraftApp {
         }
     }
 
+    /// Help ▸ Add to / Remove from "Open with" for PDF files (AJS fork): offers this executable for
+    /// `.pdf` in Windows' "Open with" list and Default apps, for the current user, or takes that
+    /// back. The default PDF app stays the user's choice. Waits for PowerShell (about a second).
+    pub fn pdf_open_with(&mut self, add: bool) {
+        let done = std::env::current_exe()
+            .and_then(|exe| if add { pdfcraft_platform::pdf_open_with::register(&exe) } else { pdfcraft_platform::pdf_open_with::unregister(&exe) });
+        match (add, done) {
+            (true, Ok(())) => self.notify_tr(
+                "AJS PDF Editor is now offered for PDF files. To make it the default, right-click a PDF ▸ Open with ▸ Choose another app.",
+            ),
+            (false, Ok(())) => self.notify_tr("AJS PDF Editor was removed from “Open with” for PDF files."),
+            (_, Err(e)) => self.notify_fmt("Couldn't change “Open with” for PDF files: {e}", &[("e", &e.to_string())]),
+        }
+    }
+
     /// Starts the checks and picks up their answers (each frame).
     pub(crate) fn poll_updates(&mut self) {
         #[cfg(not(target_arch = "wasm32"))]

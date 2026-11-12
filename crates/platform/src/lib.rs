@@ -7,5 +7,6 @@
 pub mod desktop_shortcut;
 pub mod desktop_theme;
 pub mod owner_only;
+pub mod pdf_open_with;
 pub mod staging;
 pub mod zone;
