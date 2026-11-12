@@ -68,11 +68,16 @@ const PICKERS: &[&str] = &[
     "measure.export",
 ];
 
+/// AJS fork: commands that change the user's own system (a shortcut on the real desktop, "Open with"
+/// in the real registry). Run here they replaced the user's desktop shortcut with one to the test
+/// binary. `pdfcraft_platform`'s own tests cover them against scratch folders and keys.
+const SYSTEM_CHANGES: &[&str] = &["help.desktop_shortcut", "help.pdf_open_with", "help.pdf_open_with_remove"];
+
 #[test]
 fn every_registered_command_is_implemented() {
     for spec in COMMANDS {
         // Page-text Copy needs a loaded view and egui context, covered by text_select.
-        if PICKERS.contains(&spec.id) || spec.id == "edit.copy" {
+        if PICKERS.contains(&spec.id) || SYSTEM_CHANGES.contains(&spec.id) || spec.id == "edit.copy" {
             continue;
         }
         let mut app = PdfCraftApp::new();
