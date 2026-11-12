@@ -6,7 +6,7 @@ AJS PDF Editor là bản sửa đổi của [PdfCraft](https://github.com/storyt
 
 | Thay đổi | Ở đâu |
 |---|---|
-| **Tắt tự cập nhật:** không kiểm tra GitHub khi khởi động; Help ▸ "Updates from AJS…" mở trang tải của AJS | `apps/pdfcraft/src/main.rs` (`set_startup_update_check(false)`), `crates/ui-egui/src/platform/updates.rs`, `crates/ui-egui/src/commands.rs` |
+| **Tắt tự cập nhật:** không kiểm tra GitHub khi khởi động; Help ▸ "Updates from AJS…" mở trang phát hành https://github.com/ajsjsc/ajs-pdf-editor/releases/latest (bản cài qua bộ cài AJS: AppCode `APE`, miễn phí) | `apps/pdfcraft/src/main.rs` (`set_startup_update_check(false)`), `crates/ui-egui/src/platform/updates.rs`, `crates/ui-egui/src/commands.rs` |
 | **Đổi tên** "PdfCraft" → "AJS PDF Editor" trong mọi chuỗi hiển thị, thông tin exe, tiêu đề cửa sổ, thư mục dữ liệu | `tools/ajs/rebrand.pl` (chỉ sửa nội dung chuỗi trong mã Rust và bảng dịch `*.tsv`; giữ tên kiểu, định danh nội bộ và câu ghi nguồn gốc) |
 | **Gỡ nhãn hiệu ArtCraft:** xoá `docs/brand/`, thay logo trong About và Home bằng logo AJS | `crates/ui-egui/src/widgets.rs` (`ajs_mark`), `dialogs.rs`, `home.rs` |
 | **Icon AJS** (logo "A" của bộ cài AJS) | `assets/app-icon/pdfcraft.ico`, `hicolor/*`, `pdfcraft-1024.png`, `assets/ajs/` |
