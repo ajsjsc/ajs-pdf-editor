@@ -264,6 +264,7 @@ impl PdfCraftApp {
             "help.about" => self.dialog = Some(Dialog::About),
             // AJS fork: no self-update; updates are installed by the AJS updater, so open the AJS downloads page.
             "help.check_updates" => self.open_url(pdfcraft_engine::links::APP_PAGE),
+            "help.desktop_shortcut" => self.create_desktop_shortcut(),
             _ => return None,
         }
         Some(true)

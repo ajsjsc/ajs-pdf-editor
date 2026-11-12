@@ -432,6 +432,7 @@ pub const COMMANDS: &[CommandSpec] = &[
     c("help.app_page", "AJS downloads", HELP, None, Nothing, "globe"),
     c("help.github", "PdfCraft source code (upstream)", HELP, None, Nothing, "code-xml"),
     c("help.check_updates", "Updates from AJS…", HELP, None, Nothing, "cloud"),
+    c("help.desktop_shortcut", "Create desktop shortcut", HELP, None, Nothing, "monitor"),
     c("help.about", "About AJS PDF Editor", HELP, None, Nothing, "info"),
 ];
 

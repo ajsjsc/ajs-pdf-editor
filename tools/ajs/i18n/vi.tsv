@@ -1,0 +1,14 @@
+
+# AJS fork: AJS PDF Editor strings, appended to craft-i18n's locales/vi/pdfcraft.tsv by
+# `perl tools/ajs/rebrand.pl --catalogs` (tools/ajs/package.ps1 does it). Same format: context,
+# English, translation, separated by a TAB.
+	AJS support	Hỗ trợ AJS
+	AJS downloads	Tải về từ AJS
+	PdfCraft source code (upstream)	Mã nguồn PdfCraft (bản gốc)
+	Updates from AJS…	Cập nhật từ AJS…
+	Get help and AutoCAD plug-ins from AJS.	Nhận hỗ trợ và các plug-in AutoCAD từ AJS.
+	Based on PdfCraft by the ArtCraft team and the PdfCraft contributors, modified and distributed by AJS. MIT OR Apache-2.0.	Dựa trên PdfCraft của nhóm ArtCraft và những người đóng góp cho PdfCraft, được AJS chỉnh sửa và phân phối. MIT OR Apache-2.0.
+	Updates are provided by AJS.	Bản cập nhật do AJS cung cấp.
+	Create desktop shortcut	Tạo shortcut trên màn hình nền
+	Desktop shortcut created: {path}	Đã tạo shortcut trên màn hình nền: {path}
+	Couldn't create the desktop shortcut: {e}	Không tạo được shortcut trên màn hình nền: {e}

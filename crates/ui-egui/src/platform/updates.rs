@@ -128,6 +128,17 @@ impl PdfCraftApp {
         self.open_url(pdfcraft_engine::links::APP_PAGE);
     }
 
+    /// Help ▸ Create desktop shortcut (AJS fork): `AJS PDF Editor.lnk` on the desktop, pointing at
+    /// this executable (replacing one an earlier version or the AJS plug-in made). It waits for
+    /// PowerShell to write the file (under a second); the user asked for it and sees the outcome.
+    pub fn create_desktop_shortcut(&mut self) {
+        let made = std::env::current_exe().and_then(|exe| pdfcraft_platform::desktop_shortcut::create(&exe, None));
+        match made {
+            Ok(path) => self.notify_fmt("Desktop shortcut created: {path}", &[("path", &path.display().to_string())]),
+            Err(e) => self.notify_fmt("Couldn't create the desktop shortcut: {e}", &[("e", &e.to_string())]),
+        }
+    }
+
     /// Starts the checks and picks up their answers (each frame).
     pub(crate) fn poll_updates(&mut self) {
         #[cfg(not(target_arch = "wasm32"))]

@@ -12,7 +12,8 @@ AJS PDF Editor là bản sửa đổi của [PdfCraft](https://github.com/storyt
 | **Icon AJS** (logo "A" của bộ cài AJS) | `assets/app-icon/pdfcraft.ico`, `hicolor/*`, `pdfcraft-1024.png`, `assets/ajs/` |
 | **Link** Help, About, Home trỏ về AJS; giữ link mã nguồn PdfCraft gốc | `crates/engine/src/links.rs`, `crates/engine/src/commands.rs`, `crates/ui-egui/src/menus.rs` |
 | **Ghi nguồn gốc** trong About, `NOTICE`, thông tin bản quyền của exe | `dialogs.rs`, `NOTICE`, `apps/*/build.rs` |
-| Bản dịch tiếng Việt cho các chuỗi mới | `crates/ui-egui/src/i18n/vi.tsv` (cuối tệp) |
+| **Bản dịch:** từ PdfCraft 0.21 bảng dịch nằm ở repo [storytold/craft-i18n](https://github.com/storytold/craft-i18n) (commit ghi trong `craft-i18n.rev`). Khi đóng gói, `rebrand.pl --catalogs` đổi tên trong bản sao các bảng dịch và nối thêm chuỗi tiếng Việt riêng của AJS | `tools/ajs/rebrand.pl`, `tools/ajs/i18n/vi.tsv`, `tools/ajs/package.ps1` (`-CraftI18n`) |
+| **Tạo shortcut lên desktop:** Help ▸ "Create desktop shortcut" tạo `AJS PDF Editor.lnk` trên màn hình nền (Windows), trỏ tới exe đang chạy; cùng tên tệp với shortcut D2P tạo khi cài/cập nhật nên không bị trùng | `crates/platform/src/desktop_shortcut.rs`, `crates/engine/src/commands.rs`, `crates/ui-egui/src/commands.rs`, `menus.rs`, `platform/updates.rs` |
 
 Tên exe phát hành: `AJSPdfEditor.exe` (giao diện) và `AJSPdfEditor-cli.exe` (dòng lệnh, dùng cho D2P ghép/tách/bookmark). Tên crate và tên tệp build trong `target\` vẫn là `pdfcraft`, để việc đồng bộ upstream ít xung đột.
 
@@ -27,12 +28,12 @@ AJS PDF Editor không tự kiểm tra hay tự cập nhật. Khi admin muốn đ
 
 ```powershell
 cd C:\Dev\ajs-pdf-editor
-tools\ajs\sync-upstream.ps1 -Tag v0.19.0          # merge tag, đổi tên lại, kiểm tra các thay đổi AJS
-tools\ajs\package.ps1 -CraftFonts C:\Dev\craft-fonts
+tools\ajs\sync-upstream.ps1 -Tag v0.22.0          # merge tag, đổi tên lại, kiểm tra các thay đổi AJS
+tools\ajs\package.ps1 -CraftFonts C:\Dev\craft-fonts -CraftI18n C:\Dev\craft-i18n
 ```
 
 1. `sync-upstream.ps1` dừng nếu có xung đột và liệt kê các tệp bị xung đột. Khi gỡ xung đột phải giữ đủ các thay đổi trong bảng trên, rồi chạy lại script.
-2. `craft-fonts` phải checkout đúng revision ghi trong `.github/workflows/release.yml` (`craft-fonts-ref`) của tag mới.
+2. `craft-fonts` phải checkout đúng revision ghi trong `.github/workflows/release.yml` (`craft-fonts-ref`) của tag mới; `craft-i18n` (clone `https://github.com/storytold/craft-i18n`) phải checkout đúng commit trong `craft-i18n.rev` (script tự kiểm tra).
 3. Kiểm tra bản build: mở PDF do D2P in ra, ghi chú, ký, lưu; chạy script ghép/tách/bookmark của D2P bằng `AJSPdfEditor-cli.exe run --script … --report`.
 4. Đưa zip lên kênh phát hành của AJS (AJS Plugin Updater / `lics.autolisp.vn`).
 
