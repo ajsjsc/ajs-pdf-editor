@@ -7,13 +7,18 @@
 
   Same build as the official release (packaging/windows/package.ps1): static CRT, Windows resources
   required, craft-fonts embedded (CRAFT_FONTS_DIR). The executables are renamed after the build.
+  Translations: since PdfCraft 0.21 they live in storytold/craft-i18n (at the commit in
+  craft-i18n.rev); `rebrand.pl --catalogs` renames the product in them and adds AJS's own rows
+  (tools\ajs\i18n) into target\ajs-i18n, which the build embeds through CRAFT_I18N_DIR.
 
   Usage (Windows PowerShell 5.1 or pwsh, from anywhere):
-    tools\ajs\package.ps1 -CraftFonts C:\Dev\craft-fonts
-    tools\ajs\package.ps1 -CraftFonts C:\Dev\craft-fonts -SkipBuild -ModelsDir C:\path\to\models
+    tools\ajs\package.ps1 -CraftFonts C:\Dev\craft-fonts -CraftI18n C:\Dev\craft-i18n
+    tools\ajs\package.ps1 -CraftFonts C:\Dev\craft-fonts -CraftI18n C:\Dev\craft-i18n -SkipBuild -ModelsDir C:\path\to\models
 #>
 param(
   [Parameter(Mandatory = $true)] [string] $CraftFonts,
+  # A storytold/craft-i18n checkout at the commit in craft-i18n.rev.
+  [Parameter(Mandatory = $true)] [string] $CraftI18n,
   [switch] $SkipBuild,
   # Reuse OCR models from a folder (e.g. models\ of an official portable zip); otherwise `cargo xtask models` downloads them.
   [string] $ModelsDir = '',
@@ -50,6 +55,18 @@ if (-not $SkipBuild) {
   $env:PDFCRAFT_REQUIRE_WINRES = '1'
   $env:CRAFT_FONTS_DIR = (Resolve-Path $CraftFonts).Path
   $env:PDFCRAFT_BUILD_LABEL = $Label
+  # Translations: craft-i18n's catalogs with the product renamed, plus AJS's own rows.
+  $i18nSrc = (Resolve-Path $CraftI18n).Path
+  $want = (Get-Content -Raw (Join-Path $Root 'craft-i18n.rev')).Trim()
+  $have = "$(git -C $i18nSrc rev-parse HEAD)".Trim()
+  if ($have -ne $want) { throw "craft-i18n is at $have but craft-i18n.rev wants $want (git -C $i18nSrc checkout $want)" }
+  $perl = (Get-Command perl -ErrorAction SilentlyContinue).Source
+  if (-not $perl) { $perl = Join-Path (Split-Path (Split-Path (Get-Command git).Source)) 'usr\bin\perl.exe' }
+  $i18nOut = Join-Path $Root 'target\ajs-i18n'
+  if (Test-Path $i18nOut) { Remove-Item -Recurse -Force $i18nOut }
+  Invoke-Native 'rebrand.pl --catalogs' { & $perl tools/ajs/rebrand.pl --catalogs $i18nSrc $i18nOut }
+  $env:CRAFT_I18N_DIR = $i18nOut
+  $env:CRAFT_I18N_REQUIRED = '1'
   Invoke-Native 'cargo build' { cargo build --release --locked -p pdfcraft -p pdfcraft-cli --target $Target }
 }
 $Bin = Join-Path $Root "target\$Target\release"

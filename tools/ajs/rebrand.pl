@@ -7,9 +7,11 @@
 # after merging a new upstream release (idempotent).
 #
 # Usage (from the repository root): perl tools/ajs/rebrand.pl
+#        perl tools/ajs/rebrand.pl --catalogs <craft-i18n checkout> <output dir>   (see below)
 use strict;
 use warnings;
 use File::Find;
+use File::Path ();
 
 my $NEW = 'AJS PDF Editor';
 my @ROOTS = ('apps/pdfcraft', 'apps/pdfcraft-cli', 'crates');
@@ -78,6 +80,67 @@ sub rebrand_rust {
         $out .= $c; $i++;
     }
     return $out;
+}
+
+# Catalog mode: perl tools/ajs/rebrand.pl --catalogs <craft-i18n checkout> <output dir>
+#
+# Since PdfCraft 0.21 the interface translations live in storytold/craft-i18n, embedded at build time
+# from CRAFT_I18N_DIR. The app's English strings say "AJS PDF Editor", so the catalog rows whose
+# English text names the product must say it too, or those strings fall back to English. This writes
+# <output dir>/locales/<code>/{common,pdfcraft}.tsv: every row whose English column is rebranded gets
+# the same rename in its translation (rows keeping the attribution "Based on PdfCraft …" are left
+# alone), then tools/ajs/i18n/<code>.tsv (AJS's own strings) is appended to that locale's
+# pdfcraft.tsv. Build with CRAFT_I18N_DIR=<output dir>.
+sub rebrand_row {
+    my ($line) = @_;
+    return $line if $line =~ /^\s*(#|$)/;
+    my ($eol) = $line =~ /(\r?\n)\z/;
+    $eol //= '';
+    my $body = substr($line, 0, length($line) - length($eol));
+    my @col = split /\t/, $body, -1;
+    return $line if @col < 3;
+    my $src = rebrand_text($col[1]);
+    return $line if $src eq $col[1];
+    $col[1] = $src;
+    s/(?<![A-Za-z0-9_])PdfCraft(?![A-Za-z0-9_])/$NEW/g for @col[2 .. $#col];
+    return join("\t", @col) . $eol;
+}
+
+sub slurp { my ($f) = @_; open my $fh, '<:raw', $f or die "$f: $!"; local $/; my $s = <$fh>; close $fh; return $s }
+sub spew { my ($f, $s) = @_; open my $fh, '>:raw', $f or die "$f: $!"; print $fh $s; close $fh }
+
+if (@ARGV && $ARGV[0] eq '--catalogs') {
+    my (undef, $from, $to) = @ARGV;
+    die "usage: perl tools/ajs/rebrand.pl --catalogs <craft-i18n checkout> <output dir>\n" unless $from && $to;
+    my $overlays = 'tools/ajs/i18n';
+    die "$overlays not found: run from the repository root\n" unless -d $overlays;
+    opendir my $dh, "$from/locales" or die "$from is not a craft-i18n checkout ($from/locales: $!)\n";
+    my @codes = sort grep { !/^\./ && -f "$from/locales/$_/pdfcraft.tsv" } readdir $dh;
+    closedir $dh;
+    die "$from/locales has no locale with a pdfcraft.tsv\n" unless @codes;
+    my ($rows, $added) = (0, 0);
+    for my $code (@codes) {
+        my $dir = "$to/locales/$code";
+        File::Path::make_path($dir);
+        for my $name ('common.tsv', 'pdfcraft.tsv') {
+            my $src = "$from/locales/$code/$name";
+            next unless -f $src;
+            my $out = '';
+            for my $line (split /(?<=\n)/, slurp($src)) {
+                my $new = rebrand_row($line);
+                $rows++ if $new ne $line;
+                $out .= $new;
+            }
+            if ($name eq 'pdfcraft.tsv' && -f "$overlays/$code.tsv") {
+                $out .= "\n" unless $out =~ /\n\z/;
+                $out .= slurp("$overlays/$code.tsv");
+                $added++;
+            }
+            spew("$to/locales/$code/$name", $out);
+        }
+    }
+    print "rebrand catalogs: ", scalar(@codes), " locales, $rows rows renamed, $added AJS overlays -> $to\n";
+    exit 0;
 }
 
 my ($files, $changed) = (0, 0);

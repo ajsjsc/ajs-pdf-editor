@@ -42,4 +42,4 @@ if (git status --porcelain) {
   git add -A
   git commit -q -m "chore(ajs): áp dụng lại đổi tên AJS PDF Editor sau khi đồng bộ $Tag"
 }
-Write-Output "Merged $Tag. Next: tools\ajs\package.ps1 -CraftFonts <craft-fonts at the revision in .github/workflows/release.yml>"
+Write-Output "Merged $Tag. Next: tools\ajs\package.ps1 -CraftFonts <craft-fonts at the revision in .github/workflows/release.yml> -CraftI18n <craft-i18n at the commit in craft-i18n.rev>"
