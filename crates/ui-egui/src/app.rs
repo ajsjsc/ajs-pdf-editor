@@ -44,7 +44,7 @@ impl PdfCraftApp {
         let mark = if dirty { " •" } else { "" };
         let titled = |name: Option<String>| {
             name.or_else(|| self.combine_showing().then(|| tl!("Combine files").to_owned()))
-                .map_or_else(|| "AJS PDF Editor".to_owned(), |name| format!("{name}{mark} — AJS PDF Editor"))
+                .map_or_else(|| crate::WINDOW_TITLE.to_owned(), |name| format!("{name}{mark} — {}", crate::WINDOW_TITLE))
         };
         let title = titled(front.and_then(|i| crate::canvas::tab_label(self, i)));
         // The web page's title is what an embedding host reads to tell which file opened, so it
@@ -358,6 +358,7 @@ impl PdfCraftApp {
             replace_draft: None,
             number_draft: NumberDraft { from: 1, to: 1, style: pdfcraft_engine::LabelStyle::Decimal, prefix: String::new(), start: 1 },
             word_count_draft: word_count_ui::Draft::default(),
+            ai: Default::default(),
             printer_marks_draft: Default::default(),
             convert_colours_draft: Default::default(),
             hairlines_draft: Default::default(),
@@ -396,6 +397,8 @@ impl PdfCraftApp {
             || egui::Popup::is_any_open(ctx)
             || craft_menu::bar::is_open(ctx)
             || craft_menu::bar::is_focused(ctx)
+            // AJS fork: typing in the AI assistant.
+            || self.ai.typing
     }
 
     /// Edit ▸ Copy, Cut, Select all and Delete stand for keys, and Edit ▸ Paste for the paste the

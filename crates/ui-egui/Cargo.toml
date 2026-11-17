@@ -28,6 +28,8 @@ pdfcraft-ocr = { workspace = true }
 pdfcraft-render = { workspace = true }
 pdfcraft-model = { workspace = true }
 pdfcraft-platform = { workspace = true }
+# AJS fork: the AI assistant (bring your own provider key); its HTTPS transport is ai/http.rs.
+pdfcraft-ai = { workspace = true }
 egui = { workspace = true, features = ["bytemuck", "default_fonts", "monochrome_emoji_fonts"] }
 egui_extras = { workspace = true }
 # `glow` is always on: `eframe::App::on_exit` takes a GL context when that feature is enabled.
@@ -56,6 +58,9 @@ skrifa = "0.44"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 craft-update = { workspace = true }
+# AJS fork: the AI assistant's requests, with the features craft-update already builds it with
+# (rustls, the OS certificate check), so no new crate enters the graph.
+ureq = { version = "3.4", default-features = false, features = ["rustls-no-provider", "_ring", "gzip", "platform-verifier"] }
 # Control-channel tokens.
 getrandom = "0.4"
 # Create ▸ Clipboard (images; already in the tree through egui-winit).

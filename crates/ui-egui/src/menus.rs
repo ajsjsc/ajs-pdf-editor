@@ -226,7 +226,7 @@ const SIGN: &[&str] = &[
     "sign.validate",
     "sign.panel",
 ];
-const WINDOW: &[&str] = &["view.next_tab", "view.previous_tab"];
+const WINDOW: &[&str] = &["view.next_tab", "view.previous_tab", SEP, "ai.assistant", "ai.settings"];
 const HELP: &[&str] = &[
     "help.shortcuts",
     SEP,

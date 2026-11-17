@@ -99,6 +99,8 @@ pub fn show(app: &mut PdfCraftApp, ctx: &egui::Context) {
         ctx.set_cursor_icon(egui::CursorIcon::Default);
     }
     dialogs(app, ctx);
+    // AJS fork: the AI assistant's movable windows.
+    crate::ai::show(app, ctx);
     // Above Document Properties when Security's Unlock… asked for it; script prompts stay on top.
     unlock(app, ctx);
     #[cfg(not(target_arch = "wasm32"))]
@@ -1678,7 +1680,9 @@ fn dialog_about(ui: &mut egui::Ui, req: &mut Pending) -> bool {
             });
             ui.add_space(6.0);
             // AJS fork (Apache-2.0 §4 / MIT): say where this modified version comes from and its licence.
-            ui.label(tl!("Based on PdfCraft by the ArtCraft team and the PdfCraft contributors, modified and distributed by AJS. MIT OR Apache-2.0."));
+            ui.label(tl!(
+                "Based on PdfCraft by the ArtCraft team and the PdfCraft contributors, modified and distributed by AJS. MIT OR Apache-2.0."
+            ));
             ui.label(
                 egui::RichText::new(
                     "Rendering: hayro (bootstrap) · UI: egui · Icons: Lucide (ISC) · Fonts: Inter, JetBrains Mono, Dancing Script (OFL)",

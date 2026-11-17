@@ -17,3 +17,81 @@
 	AJS PDF Editor is now offered for PDF files. To make it the default, right-click a PDF ▸ Open with ▸ Choose another app.	Đã thêm AJS PDF Editor cho tệp PDF. Muốn đặt làm mặc định: nhấp phải tệp PDF ▸ Mở bằng (Open with) ▸ Chọn ứng dụng khác.
 	AJS PDF Editor was removed from “Open with” for PDF files.	Đã gỡ AJS PDF Editor khỏi “Mở bằng” cho tệp PDF.
 	Couldn't change “Open with” for PDF files: {e}	Không đổi được “Mở bằng” cho tệp PDF: {e}
+	{model} answered, using the text of {n} page(s).	{model} đã trả lời, dựa trên chữ của {n} trang.
+	About 4 characters make a token; providers charge per token. Longer documents are cut and the assistant says so.	Khoảng 4 ký tự là một token; nhà cung cấp tính phí theo token. Tài liệu dài hơn sẽ bị cắt bớt và trợ lý sẽ báo.
+	Add an AI connection with your API key first (AI settings).	Hãy thêm kết nối AI bằng khóa API của bạn trước (Cài đặt AI).
+	Add connection…	Thêm kết nối…
+	Agent	Agent
+	AI	AI
+	AI assistant…	Trợ lý AI…
+	AI integration by autolisp.vn	Phần tích hợp AI do autolisp.vn phát triển
+	AI settings	Cài đặt AI
+	AI settings…	Cài đặt AI…
+	Answer copied.	Đã sao chép câu trả lời.
+	Answers questions using the document, citing pages	Trả lời câu hỏi dựa trên tài liệu, ghi rõ số trang
+	API address	Địa chỉ API
+	API key	Khóa API
+	Ask a question about the open document, or choose an agent and press Send.	Đặt câu hỏi về tài liệu đang mở, hoặc chọn một agent rồi bấm Gửi.
+	Asking {model}…	Đang hỏi {model}…
+	Asking {provider} for its models…	Đang lấy danh sách mô hình từ {provider}…
+	Change connection	Sửa kết nối
+	Change…	Sửa…
+	Choose	Chọn
+	Connected: {n} models available.	Đã kết nối: có {n} mô hình dùng được.
+	Connection	Kết nối
+	Connection saved.	Đã lưu kết nối.
+	Connections	Các kết nối
+	Couldn't reach the provider. Check the network, proxy or API address.	Không kết nối được tới nhà cung cấp. Hãy kiểm tra mạng, proxy hoặc địa chỉ API.
+	Document text	Nội dung gửi
+	Every request	Áp dụng cho mọi câu hỏi
+	Extract data	Trích xuất số liệu
+	Extract the important data from this document as a table.	Trích xuất các số liệu quan trọng trong tài liệu này thành bảng.
+	Finds spelling, grammar and consistency errors	Tìm lỗi chính tả, ngữ pháp và chỗ không thống nhất
+	For example: answer briefly, use Vietnamese engineering terms	Ví dụ: trả lời ngắn gọn, dùng thuật ngữ kỹ thuật tiếng Việt
+	Get a key from the provider	Lấy khóa API từ nhà cung cấp
+	How to get an API key	Cách lấy khóa API
+	How to set up the AI assistant	Cách cài đặt Trợ lý AI
+	key saved	đã lưu khóa
+	Keys are saved encrypted for your Windows account and are never shown, logged or sent anywhere but to their provider. The document's text goes to the provider only when you press Send.	Khóa API được mã hoá theo tài khoản Windows của bạn, không bao giờ hiện ra, ghi log hay gửi đi đâu ngoài nhà cung cấp của nó. Nội dung tài liệu chỉ được gửi tới nhà cung cấp khi bạn bấm Gửi.
+	Lists the account's models; costs nothing	Lấy danh sách mô hình của tài khoản; không tốn phí
+	Load the models of this account	Tải danh sách mô hình của tài khoản này
+	Most document characters sent	Số ký tự tài liệu gửi tối đa
+	New connection	Kết nối mới
+	New conversation	Cuộc trò chuyện mới
+	No AI connection yet. Add your own API key from OpenAI, Anthropic (Claude), Google Gemini, or a local server to start.	Chưa có kết nối AI. Hãy thêm khóa API của bạn từ OpenAI, Anthropic (Claude), Google Gemini, hoặc một máy chủ chạy trên máy để bắt đầu.
+	no key	chưa có khóa
+	None yet. Add one with your provider's API key.	Chưa có. Hãy thêm một kết nối bằng khóa API của nhà cung cấp.
+	Ollama: http://localhost:11434/v1 · LM Studio: http://localhost:1234/v1 · OpenRouter: https://openrouter.ai/api/v1	Ollama: http://localhost:11434/v1 · LM Studio: http://localhost:1234/v1 · OpenRouter: https://openrouter.ai/api/v1
+	Only part of the document was sent; raise the limit in AI settings to send more.	Chỉ một phần tài liệu được gửi; tăng giới hạn trong Cài đặt AI để gửi nhiều hơn.
+	Open a document to ask about.	Hãy mở một tài liệu để hỏi.
+	paste your key here	dán khóa API vào đây
+	Proofread	Soát lỗi
+	Proofread this document.	Soát lỗi tài liệu này.
+	Pulls out tables, quantities, dates and names	Lấy ra bảng biểu, khối lượng, ngày tháng và tên riêng
+	saved — type a new key to replace it	đã lưu — gõ khóa mới để thay
+	Short summary with the key points and their pages	Tóm tắt ngắn kèm các ý chính và số trang
+	Summarize this document.	Tóm tắt tài liệu này.
+	Test connection	Kiểm tra kết nối
+	The AI assistant needs the desktop app.	Trợ lý AI chỉ chạy trong ứng dụng máy tính.
+	The AI connection isn't set up.	Kết nối AI chưa được thiết lập.
+	The AI request stopped unexpectedly.	Yêu cầu AI dừng bất ngờ.
+	The answer was cut at its length limit.	Câu trả lời bị cắt vì chạm giới hạn độ dài.
+	The document text is sent to {provider} when you press Send.	Nội dung tài liệu sẽ được gửi tới {provider} khi bạn bấm Gửi.
+	The key couldn't be saved encrypted ({e}); it is kept until you close the app.	Không lưu được khóa ở dạng mã hoá ({e}); khóa chỉ được giữ tới khi bạn đóng ứng dụng.
+	The model declined to answer.	Mô hình từ chối trả lời.
+	The provider had an error. Try again later.	Nhà cung cấp đang gặp lỗi. Hãy thử lại sau.
+	The provider refused the API key. Check it in AI settings, or create a new key.	Nhà cung cấp từ chối khóa API. Hãy kiểm tra lại trong Cài đặt AI, hoặc tạo khóa mới.
+	The provider refused the request. The document may be too long for this model: lower the limit in AI settings.	Nhà cung cấp từ chối yêu cầu. Có thể tài liệu quá dài với mô hình này: hãy giảm giới hạn trong Cài đặt AI.
+	The provider's reply couldn't be read.	Không đọc được phản hồi của nhà cung cấp.
+	This model isn't available to your account. Choose another model.	Tài khoản của bạn không dùng được mô hình này. Hãy chọn mô hình khác.
+	Too many requests, or no credit left on the provider account. Wait a moment or check billing.	Quá nhiều yêu cầu, hoặc tài khoản nhà cung cấp đã hết tín dụng. Hãy chờ một lát hoặc kiểm tra thanh toán.
+	Translate this document into Vietnamese.	Dịch tài liệu này sang tiếng Việt.
+	Translates the text, keeping headings and lists	Dịch nội dung, giữ nguyên tiêu đề và danh sách
+	Type your question… (Ctrl+Enter sends)	Nhập câu hỏi… (Ctrl+Enter để gửi)
+	Uses your own AI account and API key.	Dùng tài khoản AI và khóa API của chính bạn.
+	usually not needed for a local server	thường không cần với máy chủ chạy trên máy
+	What is this document about? List its main points with their pages.	Tài liệu này nói về gì? Liệt kê các ý chính kèm số trang.
+	Whole document	Toàn bộ tài liệu
+	You	Bạn
+	Your instructions for every answer (optional)	Hướng dẫn thêm cho mọi câu trả lời (không bắt buộc)
+	Your own AI provider and key (off until you connect one)	Nhà cung cấp AI và khóa API của bạn (tắt cho tới khi bạn kết nối)

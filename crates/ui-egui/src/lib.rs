@@ -21,6 +21,10 @@ pub const UPDATE_APP: craft_update::app::App = craft_update::app::App {
 use crate::control::Host as _;
 
 /// Translate an English UI string into the current language (see [`i18n`]).
+/// AJS rule for every standalone app: the main window's title is `{app name} | autolisp.vn`, after the
+/// document's name when one is open (AJS-FORK.md, "Window title").
+pub const WINDOW_TITLE: &str = "AJS PDF Editor | autolisp.vn";
+
 macro_rules! tl {
     ($s:expr) => {
         $crate::i18n::t($s)
@@ -87,6 +91,8 @@ pub use recovery::{AUTOSAVE_SECS, RecoveryMeta, RecoveryStore, default_dictionar
 use theme::{ThemeKind, ThemePreference};
 pub use workflows::ocr_verify::{OcrVerify, Phase};
 
+// AJS fork: the AI assistant (your own provider and key).
+mod ai;
 mod app;
 mod frame_guard;
 mod hooks;
@@ -795,6 +801,8 @@ pub struct PdfCraftApp {
     /// Number pages dialog settings (1-based pages).
     pub number_draft: NumberDraft,
     pub(crate) word_count_draft: word_count_ui::Draft,
+    /// AJS fork: the AI assistant's settings, conversation and request in progress.
+    pub(crate) ai: ai::AiState,
     pub printer_marks_draft: printer_marks_ui::PrinterMarksDraft,
     pub convert_colours_draft: convert_colours_ui::ConvertColoursDraft,
     pub hairlines_draft: hairlines_ui::HairlinesDraft,

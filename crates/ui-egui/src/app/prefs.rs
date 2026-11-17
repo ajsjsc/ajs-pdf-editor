@@ -127,6 +127,8 @@ impl PdfCraftApp {
             // Null follows the interface language.
             "date_language": self.session.date_language(),
             "author": self.comment_prefs.author,
+            // AJS fork: AI connections (keys only encrypted), agent, scope and limits.
+            "ai": self.ai.to_json(),
             // Per-tool comment defaults (colours, opacity, widths), so Make Current
             // Properties Default survives a restart (#340).
             "comment_styles": self
@@ -394,6 +396,7 @@ impl PdfCraftApp {
             self.always_default_view = on;
         }
         self.restore_print_prefs(v);
+        self.ai.apply_json(&v["ai"]);
         if let Some(on) = v["highlight_fields"].as_bool() {
             self.view_defaults.highlight_fields = on;
         }

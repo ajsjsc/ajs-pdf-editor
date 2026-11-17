@@ -73,6 +73,8 @@ impl Automation {
             "comment_image_preview" => return self.comment_image_preview(&a),
             "text_extract" => self.text_extract(&a)?,
             "text_word_count" => self.text_word_count(&a)?,
+            "ai_providers" => self.ai_providers(),
+            "ai_context" => self.ai_context(&a)?,
             "text_find" => self.text_find(&a)?,
             "text_replace" => self.text_replace(&a)?,
             "page_rotate" => {

@@ -267,6 +267,13 @@ impl PdfCraftApp {
             "help.desktop_shortcut" => self.create_desktop_shortcut(),
             "help.pdf_open_with" => self.pdf_open_with(true),
             "help.pdf_open_with_remove" => self.pdf_open_with(false),
+            "ai.assistant" => self.open_ai(None),
+            "ai.ask" => self.open_ai(Some("ask")),
+            "ai.summary" => self.open_ai(Some("summary")),
+            "ai.translate" => self.open_ai(Some("translate")),
+            "ai.proofread" => self.open_ai(Some("proofread")),
+            "ai.extract" => self.open_ai(Some("extract")),
+            "ai.settings" => self.ai.settings_open = true,
             _ => return None,
         }
         Some(true)
