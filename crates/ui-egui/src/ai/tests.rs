@@ -25,7 +25,7 @@ fn fake(status: u16, body: serde_json::Value) -> Arc<Fake> {
     Arc::new(Fake { status, body: body.to_string(), sent: Mutex::new(Vec::new()) })
 }
 
-const ANSWER: &str = "Hợp đồng số 12 (trang 1); thanh toán ở Điều 5 (trang 2).";
+const ANSWER: &str = "**Hợp đồng số 12** (trang 1).\n- Thanh toán ở Điều 5 (trang 2).";
 
 /// An app with a two-page document, an OpenAI connection whose key was typed this session, and
 /// `transport` in place of the network.
@@ -195,7 +195,8 @@ fn the_windows_show_the_credit_and_answer_through_the_interface() {
     h.get_by_label("Send").click();
     h.run_steps(3);
     assert_eq!(h.state().ai.messages.len(), 2);
-    h.get_by_label(ANSWER);
+    // Shown without its Markdown, the list item with a bullet the interface font draws.
+    h.get_by_label(&super::window::readable(ANSWER));
     // Adding a connection shows the form; Cancel leaves the connections as they were.
     h.get_by_label("Add connection…").click();
     h.run_steps(2);
@@ -204,4 +205,13 @@ fn the_windows_show_the_credit_and_answer_through_the_interface() {
     h.run_steps(2);
     assert!(h.state().ai.draft.is_none());
     assert_eq!(h.state().ai.profiles.len(), 1);
+}
+
+#[test]
+fn answers_are_shown_without_markdown_markers() {
+    let md = "## **Tóm tắt**\n\nTài liệu là **hợp đồng** (trang 1).\n- Giá trị: 1.250.000.000 đồng\n  * Đợt 1: 30%\nsnake_case_name stays";
+    assert_eq!(
+        super::window::readable(md),
+        "Tóm tắt\n\nTài liệu là hợp đồng (trang 1).\n• Giá trị: 1.250.000.000 đồng\n  • Đợt 1: 30%\nsnake_case_name stays"
+    );
 }

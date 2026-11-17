@@ -78,7 +78,7 @@ fn chat_window(app: &mut PdfCraftApp, ctx: &egui::Context) -> bool {
         .order(egui::Order::Foreground)
         .default_size(egui::vec2(480.0, 600.0))
         .min_width(380.0)
-        .default_pos(egui::pos2(110.0, 90.0))
+        .default_pos(egui::pos2(360.0, 90.0))
         .show(ctx, |ui| {
             widgets::begin_dialog(ui);
             credit(ui, app);
@@ -198,7 +198,8 @@ fn conversation(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &theme::Tokens) {
                     copy = Some(i);
                 }
             });
-            ui.add(egui::Label::new(&m.text).selectable(true).wrap());
+            let shown = if m.role == Role::Assistant { readable(&m.text) } else { m.text.clone() };
+            ui.add(egui::Label::new(shown).selectable(true).wrap());
             ui.add_space(6.0);
         }
     });
@@ -263,13 +264,13 @@ fn settings_window(app: &mut PdfCraftApp, ctx: &egui::Context) -> bool {
         .collapsible(false)
         .resizable(true)
         .order(egui::Order::Foreground)
-        .default_width(520.0)
-        .default_pos(egui::pos2(640.0, 90.0))
+        .default_size(egui::vec2(540.0, 700.0))
+        .default_pos(egui::pos2(880.0, 90.0))
         .show(ctx, |ui| {
             widgets::begin_dialog(ui);
             credit(ui, app);
             ui.separator();
-            egui::ScrollArea::vertical().id_salt("ai_settings_scroll").max_height(560.0).show(ui, |ui| {
+            egui::ScrollArea::vertical().id_salt("ai_settings_scroll").max_height(f32::INFINITY).show(ui, |ui| {
                 connections(ui, app, &t);
                 ui.separator();
                 if app.ai.draft.is_some() {
@@ -325,27 +326,23 @@ fn connections(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &theme::Tokens) {
     let mut remove = None;
     let mut pick = None;
     for p in &app.ai.profiles {
+        // The name and the buttons on one row, the details on their own below, so a long
+        // provider name never runs under the buttons.
         ui.horizontal(|ui| {
-            if ui.add(widgets::radio(app.ai.active == Some(p.uid), "")).clicked() {
+            if ui.add(widgets::radio(app.ai.active == Some(p.uid), p.label())).clicked() {
                 pick = Some(p.uid);
             }
-            ui.vertical(|ui| {
-                ui.label(p.label());
-                let key = if app.ai.has_key(p) { tl!("key saved") } else { tl!("no key") };
-                ui.small(format!(
-                    "{} · {} · {key}",
-                    p.kind.label(),
-                    if p.model.is_empty() { p.kind.suggested_models().first().copied().unwrap_or_default() } else { &p.model }
-                ));
-            });
-            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                if ui.small_button(tl!("Remove")).clicked() {
-                    remove = Some(p.uid);
-                }
-                if ui.small_button(tl!("Change…")).clicked() {
-                    edit = Some(Draft::of(p));
-                }
-            });
+            if ui.small_button(tl!("Change…")).clicked() {
+                edit = Some(Draft::of(p));
+            }
+            if ui.small_button(tl!("Remove")).clicked() {
+                remove = Some(p.uid);
+            }
+        });
+        let key = if app.ai.has_key(p) { tl!("key saved") } else { tl!("no key") };
+        let model = if p.model.is_empty() { p.kind.suggested_models().first().copied().unwrap_or_default() } else { &p.model };
+        ui.indent(("ai_connection_details", p.uid), |ui| {
+            ui.add(egui::Label::new(egui::RichText::new(format!("{} · {model} · {key}", p.kind.label())).small().color(t.text_muted)).wrap());
         });
     }
     if let Some(uid) = pick {
@@ -533,4 +530,31 @@ fn save_draft(app: &mut PdfCraftApp, d: Draft) {
     if !matches!(app.ai.status, Some(Err(_))) {
         app.ai.status = Some(Ok(tl!("Connection saved.").into()));
     }
+}
+
+/// An answer as it reads: models write Markdown, which the window shows as plain text, so its
+/// markers come off (`**bold**`, `# heading`, `* item`). Copy keeps the answer as it came.
+pub(crate) fn readable(markdown: &str) -> String {
+    let mut out = String::with_capacity(markdown.len());
+    for (i, line) in markdown.lines().enumerate() {
+        if i > 0 {
+            out.push('\n');
+        }
+        let trimmed = line.trim_start();
+        let indent = line.get(..line.len() - trimmed.len()).unwrap_or_default();
+        let body = match trimmed.strip_prefix('#') {
+            Some(_) => trimmed.trim_start_matches('#').trim_start(),
+            None => trimmed,
+        };
+        let body = match body.strip_prefix("* ") {
+            Some(rest) => format!("• {rest}"),
+            None => match body.strip_prefix("- ") {
+                Some(rest) => format!("• {rest}"),
+                None => body.to_owned(),
+            },
+        };
+        out.push_str(indent);
+        out.push_str(&body.replace("**", "").replace("__", ""));
+    }
+    out
 }
