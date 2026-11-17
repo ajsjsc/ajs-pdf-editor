@@ -14709,3 +14709,44 @@ fn grouped_existing_thai_body_edits_saves_reopens_and_undo_restores_original_gly
     assert_eq!(page_text(&mut a, reopened), [new, old]);
     assert_eq!(ok(&mut a, "content_list", json!({"doc":reopened}))["count"], 0, "editing existing text must not create Add Text objects");
 }
+
+/// AJS fork: the AI assistant's tools describe and build its requests, and send nothing.
+#[test]
+fn ai_tools_list_providers_and_build_the_request_for_a_document() {
+    let dir = workdir("ai-context");
+    let mut a = auto(&dir);
+    let listed = ok(&mut a, "ai_providers", json!({}));
+    let ids: Vec<&str> = listed["providers"].as_array().unwrap().iter().map(|p| p["id"].as_str().unwrap()).collect();
+    assert_eq!(ids, ["openai", "anthropic", "gemini", "openai_compatible"]);
+    assert_eq!(listed["providers"][1]["suggested_models"][0], "claude-opus-5-5");
+    assert_eq!(listed["providers"][2]["key_env"], json!(["GEMINI_API_KEY", "GOOGLE_API_KEY"]));
+    assert!(listed["agents"].as_array().unwrap().iter().any(|g| g["id"] == "summary"));
+    assert_eq!(listed["credit"], "AI integration by autolisp.vn");
+
+    let doc = ok(&mut a, "doc_open", json!({ "path": "a.pdf" }))["doc"].as_u64().unwrap();
+    let before = ok(&mut a, "doc_list", json!({}));
+    let all = ok(&mut a, "ai_context", json!({ "doc": doc, "agent": "summary", "instructions": "Viết ngắn gọn" }));
+    let system = all["system"].as_str().unwrap();
+    assert!(system.contains("Additional instructions from the user:\nViết ngắn gọn"));
+    assert!(system.contains("<document name=\"a.pdf\">\n[Page 1]\nPage 1") && system.contains("[Page 3]\nPage 3"), "{system}");
+    assert_eq!(all["messages"], json!([{ "role": "user", "content": "Summarize this document." }]));
+    assert_eq!(all["pages_sent"], json!([1, 2, 3]));
+    assert_eq!(all["truncated"], false);
+
+    let part = ok(&mut a, "ai_context", json!({ "doc": doc, "pages": [2], "question": "Trang 2 nói gì?", "max_chars": 3 }));
+    assert_eq!(part["agent"], "ask");
+    assert_eq!(part["pages_sent"], json!([2]));
+    assert_eq!(part["truncated"], true);
+    assert_eq!(part["chars"], 3);
+    assert_eq!(part["messages"][0]["content"], "Trang 2 nói gì?");
+    // Building a request reads; it changes nothing.
+    assert_eq!(ok(&mut a, "doc_list", json!({})), before);
+
+    for bad in [json!({ "doc": doc, "agent": "poet" }), json!({ "doc": doc, "max_chars": 0 }), json!({ "doc": doc, "pages": [9] })] {
+        assert!(a.call("ai_context", &bad).is_err(), "{bad}");
+    }
+    for name in ["ai_providers", "ai_context"] {
+        let def = tools().into_iter().find(|t| t.name == name).unwrap();
+        assert!(def.read_only && !def.destructive, "{name}");
+    }
+}

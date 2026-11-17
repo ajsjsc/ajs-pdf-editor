@@ -15,6 +15,8 @@ AJS PDF Editor là bản sửa đổi của [PdfCraft](https://github.com/storyt
 | **Bản dịch:** từ PdfCraft 0.21 bảng dịch nằm ở repo [storytold/craft-i18n](https://github.com/storytold/craft-i18n) (commit ghi trong `craft-i18n.rev`). Khi đóng gói, `rebrand.pl --catalogs` đổi tên trong bản sao các bảng dịch và nối thêm chuỗi tiếng Việt riêng của AJS | `tools/ajs/rebrand.pl`, `tools/ajs/i18n/vi.tsv`, `tools/ajs/package.ps1` (`-CraftI18n`) |
 | **Tạo shortcut lên desktop:** Help ▸ "Create desktop shortcut" tạo `AJS PDF Editor.lnk` trên màn hình nền (Windows), trỏ tới exe đang chạy; cùng tên tệp với shortcut D2P tạo khi cài/cập nhật nên không bị trùng | `crates/platform/src/desktop_shortcut.rs`, `crates/engine/src/commands.rs`, `crates/ui-egui/src/commands.rs`, `menus.rs`, `platform/updates.rs` |
 | **"Open with" cho tệp PDF:** Help ▸ "Add to “Open with” for PDF files" / "Remove from…" đăng ký (hoặc gỡ) exe đang chạy cho `.pdf` trong "Mở bằng" và Settings ▸ Default apps, chỉ cho người dùng hiện tại (HKCU, không cần quyền admin): ProgID `AJSPdfEditor.Document`, `.pdf\OpenWithProgids`, `Applications\AJSPdfEditor.exe`, `Software\AJS\AJS PDF Editor\Capabilities`, `RegisteredApplications`. Không giành ứng dụng mặc định; người dùng tự chọn | `crates/platform/src/pdf_open_with.rs`, `crates/engine/src/commands.rs`, `crates/ui-egui/src/commands.rs`, `menus.rs`, `platform/updates.rs` |
+| **Trợ lý AI (phần tích hợp do autolisp.vn viết):** All tools ▸ Trợ lý AI và Window ▸ "AI assistant…" / "AI settings…". Người dùng tự nhập khóa API của mình cho OpenAI, Anthropic (Claude), Google Gemini hoặc máy chủ tương thích OpenAI (Ollama, LM Studio, OpenRouter…), chọn agent (Hỏi về tài liệu, Tóm tắt, Dịch, Soát lỗi, Trích xuất số liệu) và mô hình. Tắt cho tới khi có kết nối; chỉ gửi khi bấm Gửi; khóa mã hoá DPAPI theo tài khoản Windows; cần quyền sao chép của tài liệu. Cửa sổ có logo AJS và dòng ghi công autolisp.vn. Không chạy được ở bản web. Headless: tool `ai_providers`, `ai_context` (dựng yêu cầu, không gửi). Phần gọi HTTPS chỉ nằm trong app giao diện, nên `pdfcraft-cli` vẫn không mở socket (`cargo xtask netcheck`) | `crates/ai/` (`pdfcraft-ai`: provider, agent, ngữ cảnh tài liệu, không có mã mạng), `crates/ui-egui/src/ai.rs`, `ai/window.rs`, `ai/http.rs`, `crates/platform/src/secret.rs`, `crates/automation/src/ai.rs`, `crates/engine/src/catalog.rs`, `commands.rs`, `parity/acrobat-features.toml` (`misc.ai-assistant-byo`) |
+| **Tiêu đề cửa sổ** theo quy định chung của AJS cho mọi ứng dụng độc lập: `{tên app} \| autolisp.vn`, đặt sau tên tài liệu khi có tài liệu đang mở (`hop-dong.pdf — AJS PDF Editor \| autolisp.vn`) | `crates/ui-egui/src/lib.rs` (`WINDOW_TITLE`), `app.rs` (`sync_titles`), `apps/pdfcraft/src/main.rs` |
 
 Tên exe phát hành: `AJSPdfEditor.exe` (giao diện) và `AJSPdfEditor-cli.exe` (dòng lệnh, dùng cho D2P ghép/tách/bookmark). Tên crate và tên tệp build trong `target\` vẫn là `pdfcraft`, để việc đồng bộ upstream ít xung đột.
 
@@ -49,3 +51,13 @@ tools\ajs\package.ps1 -CraftFonts C:\Dev\craft-fonts -CraftI18n C:\Dev\craft-i18
 - Mã: MIT OR Apache-2.0 (`LICENSE-MIT`, `LICENSE-APACHE`), giữ nguyên `NOTICE` gốc và thêm phần ghi chú của AJS ở đầu.
 - Font đi kèm: SIL OFL 1.1 (`OFL-*.txt`); model OCR: CC-BY-SA-4.0 (`models\ATTRIBUTION.txt`); icon tài liệu: ISC AND (MIT OR Apache-2.0) (`LICENSE-document.txt`).
 - Tên, wordmark và logo ArtCraft là nhãn hiệu của ArtCraft Team, đã gỡ khỏi bản này theo `docs/brand/LICENSE-brand.txt` của upstream.
+
+## Quy định tiêu đề cửa sổ (mọi ứng dụng độc lập của AJS)
+
+Bắt buộc từ lần phát hành tiếp theo của mỗi ứng dụng độc lập (APE, ajsCAD, …): cửa sổ chính có tiêu đề dạng
+
+```
+{tên app} | autolisp.vn
+```
+
+Khi đang mở một tài liệu, tên tài liệu đứng trước và nối bằng dấu gạch dài: `hop-dong.pdf — AJS PDF Editor | autolisp.vn` (dấu `•` sau tên tài liệu khi có thay đổi chưa lưu, như hiện nay). Ở APE, chuỗi này là hằng `WINDOW_TITLE` trong `crates/ui-egui/src/lib.rs`. Khi đồng bộ upstream, phải giữ thay đổi này (upstream ghi `— PdfCraft`).

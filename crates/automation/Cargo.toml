@@ -10,6 +10,8 @@ workspace = true
 
 [dependencies]
 pdfcraft-engine = { workspace = true }
+# AJS fork: ai_providers and ai_context build the AI assistant's requests; pdfcraft-ai has no network code.
+pdfcraft-ai = { workspace = true }
 pdfcraft-cos = { workspace = true }
 pdfcraft-render = { workspace = true }
 pdfcraft-organize = { workspace = true }

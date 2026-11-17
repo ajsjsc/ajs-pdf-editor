@@ -436,6 +436,14 @@ pub const COMMANDS: &[CommandSpec] = &[
     c("help.pdf_open_with", "Add to “Open with” for PDF files", HELP, None, Nothing, "file-check"),
     c("help.pdf_open_with_remove", "Remove from “Open with” for PDF files", HELP, None, Nothing, "file-x"),
     c("help.about", "About AJS PDF Editor", HELP, None, Nothing, "info"),
+    // AJS fork: the AI assistant with the user's own provider and key (Window menu, All tools ▸ AI assistant).
+    c("ai.assistant", "AI assistant…", None, None, Nothing, "sparkles"),
+    c("ai.ask", "Ask about this document", None, None, Copying, "message-circle-reply"),
+    c("ai.summary", "Summarize", None, None, Copying, "sparkles"),
+    c("ai.translate", "Translate", None, None, Copying, "languages"),
+    c("ai.proofread", "Proofread", None, None, Copying, "list-checks"),
+    c("ai.extract", "Extract data", None, None, Copying, "file-spreadsheet"),
+    c("ai.settings", "AI settings…", None, None, Nothing, "settings"),
 ];
 
 pub fn command(id: &str) -> Option<&'static CommandSpec> {

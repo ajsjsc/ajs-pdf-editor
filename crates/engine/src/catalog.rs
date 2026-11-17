@@ -62,7 +62,7 @@ const fn menu_item(label: &'static str, icon: &'static str, actions: &'static [&
     ToolItem { label, icon, command, availability: Ready, actions }
 }
 
-use Availability::{Planned, Provider, Ready};
+use Availability::{Planned, Ready};
 
 const RED: [u8; 3] = [0xE0, 0x3E, 0x3E];
 const PURPLE: [u8; 3] = [0x8E, 0x4E, 0xE6];
@@ -534,15 +534,21 @@ pub static TOOL_GROUPS: &[ToolGroup] = &[
         icon: "sparkles",
         hue: PINK,
         badge: Some("Optional"),
-        availability: Provider,
-        sections: &[ToolSection {
-            title: "Bring your own model (off by default)",
-            items: &[
-                item("Summarize", "sparkles", "ai.summary", Provider),
-                item("Ask about this document", "message-circle-reply", "ai.ask", Provider),
-                item("Translate", "languages", "ai.translate", Provider),
-            ],
-        }],
+        // AJS fork (autolisp.vn): ready once the user connects their own provider and key; off until then.
+        availability: Ready,
+        sections: &[
+            ToolSection {
+                title: "Your own AI provider and key (off until you connect one)",
+                items: &[
+                    item("Ask about this document", "message-circle-reply", "ai.ask", Ready),
+                    item("Summarize", "sparkles", "ai.summary", Ready),
+                    item("Translate", "languages", "ai.translate", Ready),
+                    item("Proofread", "list-checks", "ai.proofread", Ready),
+                    item("Extract data", "file-spreadsheet", "ai.extract", Ready),
+                ],
+            },
+            ToolSection { title: "Settings", items: &[item("AI settings…", "settings", "ai.settings", Ready)] },
+        ],
     },
 ];
 

@@ -1,0 +1,17 @@
+[package]
+name = "pdfcraft-ai"
+description = "AJS PDF Editor: bring-your-own AI provider — request and reply formats, agents and document context (no network code)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+# Text of the pages sent as context: the same text layer text_extract reads.
+pdfcraft-render = { workspace = true }
+serde_json = { workspace = true }
+
+[dev-dependencies]
+pdfcraft-testkit = { workspace = true }

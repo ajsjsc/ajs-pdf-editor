@@ -252,6 +252,23 @@ pub fn tools() -> Vec<ToolDef> {
                 "generation":{"type":"integer","minimum":0,"description":"Use generation returned by object_list to reject a stale selection."}}), &["doc","page"])),
         t("object_paste", "Paste copied objects", "Edit ▸ Paste of what object_copy copied, onto page of doc as page content that draws the same: where it was, or on the page it came from 18 points down and to the right, and 18 more for each further paste onto the same page; centred when that would leave it off the page. Resources join the page's under names that don't clash; into another document the fonts, images and other objects they use are copied (each once, sharing what is there; refused past 20,000 objects or 256 MB). Pasted content is untagged and in no layer. One undo step.")
             .with(schema(json!({"doc":doc(),"page":{"type":"integer","minimum":1}}), &["doc","page"])),
+        // AJS fork: the AI assistant, headless. Neither tool opens a socket (`cargo xtask netcheck`).
+        t("ai_providers", "AI providers and agents", "List what the AI assistant (AJS fork, by autolisp.vn) can use: each provider (id, label, default_base_url, suggested_models with the default first, key_env: the environment variables a key may come from, needs_key, key_page: where the user creates a key) and each agent (id, label, description, default_prompt). The desktop app sends requests with the user's own key; this tool sends nothing.")
+            .ro()
+            .with(schema(json!({}), &[])),
+        t("ai_context", "AI request for a document", "Build exactly what the AI assistant would send for a question about a document, without sending it: the system prompt (the agent's instructions, the user's extra instructions, then the pages' text between <document> tags, each page after a [Page N] line) and the user message. Answer it with your own model. Copy permission is required, as for text_extract. Returns system, messages ([{role: \"user\", content}]), agent, pages_sent, pages_without_text (pages with no text layer: scans need OCR), truncated (the text was cut at max_chars) and chars. Sends nothing.")
+            .ro()
+            .cmd("ai.ask")
+            .with(schema(
+                json!({
+                    "doc": doc(), "pages": pages("to include (default: all)"),
+                    "agent": { "type": "string", "enum": pdfcraft_ai::AGENTS.iter().map(|a| a.id).collect::<Vec<_>>(), "description": "Role of the assistant (default ask). See ai_providers." },
+                    "question": { "type": "string", "description": "The user's message (default: the agent's default_prompt)." },
+                    "instructions": { "type": "string", "description": "Extra instructions added after the agent's." },
+                    "max_chars": { "type": "integer", "minimum": 1, "maximum": 2000000, "description": "Most characters of document text (default 120000)." }
+                }),
+                &["doc"],
+            )),
         t("text_word_count", "Word count", "Count Unicode words and characters on selected pages (default all), with totals and per-page counts. Table/code exclusions use PDF structure tags, not visual guesses; unclassified text is retained. Image exclusion removes Figure-tagged and invisible/OCR text. Does not run OCR. Copy permission is required. Fails rather than returning a partial total when a page cannot be read.")
             .ro()
             .cmd("file.word_count")

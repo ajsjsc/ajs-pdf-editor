@@ -9910,6 +9910,18 @@ evidence = []
 notes = ""
 
 [[feature]]
+id = "misc.ai-assistant-byo"
+title = "AI assistant with your own provider and key (AJS fork, autolisp.vn)"
+area = "N"
+tier = "P3"
+milestone = "M13"
+status = "shipped"
+commands = ["ai.assistant", "ai.ask", "ai.summary", "ai.translate", "ai.proofread", "ai.extract", "ai.settings"]
+tools = ["ai_providers", "ai_context"]
+evidence = ["crates/ai/src/tests.rs::claude_uses_the_messages_api_with_its_version_header", "crates/ai/src/tests.rs::the_context_marks_pages_and_keeps_to_the_budget", "crates/platform/src/secret.rs::a_key_comes_back_only_from_its_encrypted_form", "crates/ui-egui/src/ai/tests.rs::asking_sends_the_document_and_shows_the_answer", "crates/ui-egui/src/ai/http.rs::a_request_reaches_a_local_server_with_its_headers_and_body", "crates/automation/tests/it/automation.rs::ai_tools_list_providers_and_build_the_request_for_a_document"]
+notes = "AJS fork only. Off until the user adds a connection: OpenAI, Anthropic Claude, Google Gemini or any OpenAI-compatible server (Ollama, LM Studio, OpenRouter), with the user's own API key, saved encrypted with DPAPI for the Windows account. Agents: ask (with page citations), summarize, translate, proofread, extract data; the user picks agent and model (the provider's own list can be loaded). The document's text layer (no OCR) is sent, cut to a limit, only when the user presses Send; copy permission is required. Non-streaming requests, up to 8192 answer tokens; no images or tools. Headless: ai_providers and ai_context build the request without sending it (the batch path opens no socket); the web build sends nothing."
+
+[[feature]]
 id = "misc.adobe-ai-assistant"
 title = "Adobe AI Assistant"
 area = "N"
